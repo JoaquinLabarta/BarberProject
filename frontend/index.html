@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Turnos - Barbería</title>
+    <!-- =====================================================
+         SECCIÓN DE ESTILOS (COLORES, TIPOGRAFÍA, ETC.)
+         -----------------------------------------------------
+         AQUÍ PUEDES CAMBIAR:
+         - Colores principales (fondo, botones, textos).
+         - Tipografía.
+         - Logos (ver sección del header).
+         ===================================================== -->
+    <style>
+      /* ---------- PALETA PRINCIPAL INSPIRADA EN LOGO BARBERS.LP ---------- */
+      :root {
+        --color-fondo: #050505; /* negro profundo del fondo del logo */
+        --color-primario: #c9a25f; /* dorado principal del logo */
+        --color-secundario: #f4e6c6; /* tono marfil suave para textos principales */
+        --color-texto-suave: #9b8a6a; /* dorado apagado para textos secundarios */
+        --color-error: #e74c3c;
+        --color-exito: #2ecc71;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: var(--color-fondo);
+        color: var(--color-secundario);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 420px; /* Pensado principalmente para celular */
+        background: rgba(20, 20, 20, 0.95);
+        border-radius: 16px;
+        padding: 20px 18px 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* ---------- AQUÍ PUEDES CAMBIAR LOGO / NOMBRE DE LA BARBERÍA ---------- */
+      .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--color-primario);
+      }
+
+      .logo-img {
+        width: 120px;
+        height: auto;
+      }
+
+      .logo-texto {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .subtitulo {
+        margin-top: 2px;
+        font-size: 12px;
+        color: var(--color-texto-suave);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .tabs {
+        display: flex;
+        margin-bottom: 16px;
+        border-radius: 999px;
+        background: #151515;
+        padding: 3px;
+      }
+
+      .tab {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 999px;
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--color-texto-suave);
+        transition: all 0.2s ease;
+      }
+
+      .tab.activa {
+        background: var(--color-primario);
+        color: #000;
+        font-weight: 600;
+      }
+
+      .seccion {
+        display: none;
+        animation: fadeIn 0.2s ease;
+      }
+
+      .seccion.activa {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      label {
+        font-size: 13px;
+        color: var(--color-texto-suave);
+      }
+
+      input {
+        width: 100%;
+        padding: 9px 10px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #121212;
+        color: var(--color-secundario);
+        font-size: 14px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: var(--color-primario);
+      }
+
+      .boton {
+        margin-top: 6px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 999px;
+        border: none;
+        background: var(--color-primario);
+        color: #000;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .boton-secundario {
+        margin-top: 8px;
+        background: transparent;
+        color: var(--color-texto-suave);
+        border: 1px solid #333;
+      }
+
+      .mensaje {
+        margin-top: 8px;
+        font-size: 13px;
+      }
+
+      .mensaje.error {
+        color: var(--color-error);
+      }
+
+      .mensaje.exito {
+        color: var(--color-exito);
+      }
+
+      .texto-pequeno {
+        font-size: 12px;
+        color: var(--color-texto-suave);
+        margin-top: 10px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <!-- =====================================================
+             AQUÍ PUEDES PONER EL LOGO DE TU BARBERÍA
+             -----------------------------------------------------
+             - Puedes reemplazar el texto por una imagen <img>.
+             - También puedes cambiar el nombre de la barbería.
+             ===================================================== -->
+        <div class="logo">
+          <!--
+            LOGO BARBERS.LP
+            ----------------------------------------------------
+            - Guarda tu logo como "logo-barberslp.png" dentro de
+              la carpeta "frontend".
+            - El src de la imagen ya apunta a ese archivo.
+          -->
+          <img src="logo-barberslp.png" alt="Barbers.LP" class="logo-img" />
+          <div class="logo-texto">BARBERS.LP</div>
+        </div>
+        <div class="subtitulo">DESDE · 2024</div>
+      </header>
+
+      <!-- Pestañas: Login / Registro -->
+      <div class="tabs">
+        <div class="tab activa" data-seccion="login">Iniciar sesión</div>
+        <div class="tab" data-seccion="registro">Registrarse</div>
+      </div>
+
+      <!-- SECCIÓN LOGIN -->
+      <section id="seccion-login" class="seccion activa">
+        <form id="form-login">
+          <div>
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required />
+          </div>
+          <div>
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit" class="boton">Entrar</button>
+          <p id="login-mensaje" class="mensaje"></p>
+        </form>
+        <p class="texto-pequeno">
+          Si eres el barbero, también puedes iniciar sesión con tu cuenta para gestionar los horarios y los turnos.
+        </p>
+      </section>
+
+      <!-- SECCIÓN REGISTRO CLIENTE -->
+      <section id="seccion-registro" class="seccion">
+        <form id="form-registro">
+          <div>
+            <label for="reg-nombre">Nombre completo</label>
+            <input type="text" id="reg-nombre" required />
+          </div>
+          <div>
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" required />
+          </div>
+          <div>
+            <label for="reg-telefono">Teléfono</label>
+            <input type="tel" id="reg-telefono" required />
+          </div>
+          <div>
+            <label for="reg-direccion">Dirección</label>
+            <input type="text" id="reg-direccion" required />
+          </div>
+          <div>
+            <label for="reg-password">Contraseña</label>
+            <input type="password" id="reg-password" required />
+          </div>
+          <button type="submit" class="boton">Crear cuenta de cliente</button>
+          <p id="registro-mensaje" class="mensaje"></p>
+        </form>
+        <p class="texto-pequeno">
+          Tus datos solo se utilizarán para gestionar tus turnos en la barbería.
+        </p>
+      </section>
+
+      <!-- Mensaje sobre forma de pago -->
+      <p class="texto-pequeno">
+        <strong>Importante:</strong> El pago de los servicios se realiza únicamente
+        <strong>en efectivo y de forma presencial</strong> en la barbería.
+      </p>
+
+      <button id="boton-panel-demo" class="boton-secundario">
+        Ver ejemplo de panel (demo)
+      </button>
+      <p class="texto-pequeno">
+        Más adelante se agregarán pantallas específicas para clientes y barbero
+        (historial de turnos, horarios, etc.). Este inicio es para que puedas
+        visualizar el estilo general en web/móvil.
+      </p>
+    </div>
+
+    <!-- =========================================================
+         LÓGICA BÁSICA DE INTERFAZ (CAMBIO DE TABS Y LLAMADOS API)
+         ---------------------------------------------------------
+         AQUÍ PUEDES:
+         - Cambiar URLs de API si mueves el backend.
+         - Ajustar mensajes que se muestran al usuario.
+         ========================================================= -->
+    <script>
+      const API_BASE = '/api'; // Si cambias el prefijo del backend, actualiza esto.
+
+      const tabs = document.querySelectorAll('.tab');
+      const secciones = {
+        login: document.getElementById('seccion-login'),
+        registro: document.getElementById('seccion-registro')
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.classList.remove('activa'));
+          tab.classList.add('activa');
+
+          const destino = tab.dataset.seccion;
+          Object.entries(secciones).forEach(([id, seccion]) => {
+            seccion.classList.toggle('activa', id === destino);
+          });
+        });
+      });
+
+      // --------------------------------------------------------
+      // REGISTRO DE CLIENTE
+      // --------------------------------------------------------
+      const formRegistro = document.getElementById('form-registro');
+      const registroMensaje = document.getElementById('registro-mensaje');
+
+      formRegistro.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        registroMensaje.textContent = '';
+        registroMensaje.className = 'mensaje';
+
+        const payload = {
+          nombre: document.getElementById('reg-nombre').value.trim(),
+          email: document.getElementById('reg-email').value.trim(),
+          telefono: document.getElementById('reg-telefono').value.trim(),
+          direccion: document.getElementById('reg-direccion').value.trim(),
+          password: document.getElementById('reg-password').value
+        };
+
+        try {
+          const resp = await fetch(`${API_BASE}/auth/registro`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            registroMensaje.textContent = data.mensaje || 'Error al registrar.';
+            registroMensaje.classList.add('error');
+            return;
+          }
+
+          registroMensaje.textContent =
+            data.mensaje || 'Registro exitoso. Ahora puedes iniciar sesión.';
+          registroMensaje.classList.add('exito');
+          formRegistro.reset();
+
+          // Después de registrarse, cambiar a la pestaña de LOGIN
+          const tabLogin = document.querySelector('.tab[data-seccion="login"]');
+          if (tabLogin) {
+            tabLogin.click();
+          }
+
+          registroMensaje.textContent = data.mensaje || 'Registro exitoso.';
+          registroMensaje.classList.add('exito');
+          formRegistro.reset();
+        } catch (error) {
+          registroMensaje.textContent = 'Error de conexión con el servidor.';
+          registroMensaje.classList.add('error');
+        }
+      });
+
+      // --------------------------------------------------------
+      // LOGIN
+      // --------------------------------------------------------
+      const formLogin = document.getElementById('form-login');
+      const loginMensaje = document.getElementById('login-mensaje');
+
+      formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        loginMensaje.textContent = '';
+        loginMensaje.className = 'mensaje';
+
+        const payload = {
+          email: document.getElementById('login-email').value.trim(),
+          password: document.getElementById('login-password').value
+        };
+
+        try {
+          const resp = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            loginMensaje.textContent = data.mensaje || 'Credenciales inválidas.';
+            loginMensaje.classList.add('error');
+            return;
+          }
+
+          // Guardamos el token en localStorage para futuras llamadas.
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+          loginMensaje.textContent = 'Inicio de sesión exitoso. Redirigiendo...';
+          loginMensaje.classList.add('exito');
+
+          // Redirigimos según el rol del usuario:
+          // - barbero -> panel del barbero
+          // - cliente -> panel del cliente
+          setTimeout(() => {
+            if (data.usuario.role === 'barbero') {
+              window.location.href = '/barbero.html';
+            } else {
+              window.location.href = '/cliente.html';
+            }
+          }, 600);
+        } catch (error) {
+          loginMensaje.textContent = 'Error de conexión con el servidor.';
+          loginMensaje.classList.add('error');
+        }
+      });
+
+      // Botón de demo (de momento solo muestra un mensaje)
+      document.getElementById('boton-panel-demo').addEventListener('click', () => {
+        alert(
+          'En esta demo inicial solo se muestra el inicio.\n' +
+            'Luego se agregarán pantallas completas para clientes y barbero (historial, horarios, etc.).'
+        );
+      });
+    </script>
+  </body>
+  </html>
+

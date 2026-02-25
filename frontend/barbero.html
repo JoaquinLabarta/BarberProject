@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Barbero - Barbería</title>
+    <!-- =====================================================
+         ESTILOS DEL PANEL DE BARBERO
+         -----------------------------------------------------
+         - Comparte paleta con el resto.
+         - Aquí puedes ajustar diseño solo del panel de barbero.
+         ===================================================== -->
+    <style>
+      :root {
+        --color-fondo: #050505;
+        --color-primario: #c9a25f;
+        --color-secundario: #f4e6c6;
+        --color-texto-suave: #9b8a6a;
+        --color-error: #e74c3c;
+        --color-exito: #2ecc71;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: var(--color-fondo);
+        color: var(--color-secundario);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 480px;
+        background: rgba(20, 20, 20, 0.95);
+        border-radius: 16px;
+        padding: 20px 18px 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--color-primario);
+      }
+
+      .logo-img {
+        width: 38px;
+        height: auto;
+      }
+
+      .logo-texto {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .saludo {
+        font-size: 13px;
+        color: var(--color-texto-suave);
+        text-align: right;
+      }
+
+      .boton-salir {
+        margin-top: 4px;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        background: transparent;
+        color: var(--color-texto-suave);
+        cursor: pointer;
+      }
+
+      h2 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      .bloque {
+        margin-bottom: 16px;
+        padding: 10px 10px 12px;
+        border-radius: 12px;
+        background: #151515;
+      }
+
+      .titulo-seccion {
+        font-size: 13px;
+        color: var(--color-texto-suave);
+        margin-bottom: 6px;
+      }
+
+      .texto-pequeno {
+        font-size: 12px;
+        color: var(--color-texto-suave);
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+
+      .boton {
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: none;
+        background: var(--color-primario);
+        color: #000;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .boton-pequeno {
+        padding: 4px 8px;
+        font-size: 11px;
+        border-radius: 999px;
+        border: none;
+        background: #252525;
+        color: var(--color-secundario);
+        cursor: pointer;
+      }
+
+      .boton-pequeno--ok {
+        background: rgba(46, 204, 113, 0.2);
+        color: var(--color-exito);
+      }
+
+      .boton-pequeno--no {
+        background: rgba(231, 76, 60, 0.2);
+        color: var(--color-error);
+      }
+
+      .mensaje {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+
+      .mensaje.error {
+        color: var(--color-error);
+      }
+
+      .mensaje.exito {
+        color: var(--color-exito);
+      }
+
+      .fila {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+
+      input[type='time'],
+      input[type='number'],
+      input[type='date'] {
+        flex: 1;
+        padding: 7px 8px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #121212;
+        color: var(--color-secundario);
+        font-size: 13px;
+      }
+
+      .tabla-turnos {
+        max-height: 220px;
+        overflow-y: auto;
+        margin-top: 6px;
+        font-size: 12px;
+      }
+
+      .turno-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        border-bottom: 1px solid #222;
+      }
+
+      .turno-detalle {
+        max-width: 60%;
+      }
+
+      .badge {
+        padding: 2px 6px;
+        border-radius: 999px;
+        font-size: 10px;
+      }
+
+      .badge-programado {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--color-exito);
+      }
+
+      .badge-cancelado {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--color-error);
+      }
+
+      .badge-completado {
+        background: rgba(197, 157, 95, 0.15);
+        color: var(--color-primario);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <img src="logo-barberslp.png" alt="Barbers.LP" class="logo-img" />
+          <div class="logo-texto">BARBERS.LP</div>
+        </div>
+        <div class="saludo">
+          <div id="texto-saludo">Hola, barbero</div>
+          <button class="boton-salir" id="btn-logout">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <!-- BLOQUE: DEFINIR HORARIO -->
+      <section class="bloque">
+        <div class="titulo-seccion">Horario del día</div>
+        <div class="fila">
+          <input type="date" id="fecha-horario" />
+        </div>
+        <div class="fila">
+          <input type="time" id="hora-inicio" />
+          <input type="time" id="hora-fin" />
+          <input
+            type="number"
+            id="duracion"
+            min="15"
+            step="15"
+            placeholder="Min"
+            title="Duración de cada turno en minutos"
+          />
+        </div>
+        <button id="btn-guardar-horario" class="boton">Guardar horario</button>
+        <p id="mensaje-horario" class="mensaje"></p>
+        <p class="texto-pequeno">
+          Si no indicas la duración, se usará la duración por defecto configurada en el backend.
+        </p>
+      </section>
+
+      <!-- BLOQUE: TURNOS DEL DÍA -->
+      <section class="bloque">
+        <div class="titulo-seccion">Turnos del día</div>
+        <div class="fila">
+          <input type="date" id="fecha-turnos" />
+          <button id="btn-refrescar-turnos" class="boton-pequeno">Actualizar</button>
+        </div>
+        <div id="lista-turnos" class="tabla-turnos">
+          Cargando turnos...
+        </div>
+        <p class="texto-pequeno">
+          Marca si el cliente asistió o no. Esto se verá luego en el historial del cliente.
+        </p>
+      </section>
+      <p class="texto-pequeno">
+        Recuerda que los clientes solo pueden cancelar con al menos
+        <strong>1 hora de anticipación</strong> (configurable en el backend).
+      </p>
+    </div>
+
+    <script>
+      const API_BASE = '/api';
+      const token = localStorage.getItem('token');
+      const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+
+      if (!token || !usuario || usuario.role !== 'barbero') {
+        window.location.href = '/';
+      }
+
+      document.getElementById('texto-saludo').textContent = `Hola, ${usuario.nombre}`;
+
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('usuario');
+        window.location.href = '/';
+      });
+
+      const hoy = new Date().toISOString().slice(0, 10);
+      const fechaHorarioInput = document.getElementById('fecha-horario');
+      const fechaTurnosInput = document.getElementById('fecha-turnos');
+      fechaHorarioInput.value = hoy;
+      fechaTurnosInput.value = hoy;
+
+      const horaInicioInput = document.getElementById('hora-inicio');
+      const horaFinInput = document.getElementById('hora-fin');
+      const duracionInput = document.getElementById('duracion');
+      const btnGuardarHorario = document.getElementById('btn-guardar-horario');
+      const msgHorario = document.getElementById('mensaje-horario');
+
+      const listaTurnos = document.getElementById('lista-turnos');
+      const btnRefrescarTurnos = document.getElementById('btn-refrescar-turnos');
+
+      // ---------- HORARIO ----------
+      async function cargarHorario() {
+        msgHorario.textContent = '';
+        msgHorario.className = 'mensaje';
+
+        const date = fechaHorarioInput.value;
+        if (!date) return;
+
+        try {
+          const resp = await fetch(
+            `${API_BASE}/barbero/horario?date=${encodeURIComponent(date)}`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+          );
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            msgHorario.textContent = data.mensaje || 'No se pudo leer el horario.';
+            msgHorario.classList.add('error');
+            return;
+          }
+
+          if (!data.horario) {
+            horaInicioInput.value = '';
+            horaFinInput.value = '';
+            duracionInput.placeholder = 'Min';
+            msgHorario.textContent = 'No hay horario cargado para este día.';
+            return;
+          }
+
+          horaInicioInput.value = data.horario.start_time;
+          horaFinInput.value = data.horario.end_time;
+          duracionInput.value = data.horario.slot_duration_minutes;
+          msgHorario.textContent = 'Horario cargado.';
+          msgHorario.classList.add('exito');
+        } catch (error) {
+          msgHorario.textContent = 'Error de conexión al leer el horario.';
+          msgHorario.classList.add('error');
+        }
+      }
+
+      btnGuardarHorario.addEventListener('click', async () => {
+        msgHorario.textContent = '';
+        msgHorario.className = 'mensaje';
+
+        const date = fechaHorarioInput.value;
+        const start_time = horaInicioInput.value;
+        const end_time = horaFinInput.value;
+        const duracion =
+          duracionInput.value && Number(duracionInput.value) > 0
+            ? Number(duracionInput.value)
+            : undefined;
+
+        if (!date || !start_time || !end_time) {
+          msgHorario.textContent = 'Completa fecha, hora de inicio y hora de fin.';
+          msgHorario.classList.add('error');
+          return;
+        }
+
+        try {
+          const resp = await fetch(`${API_BASE}/barbero/horario`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ date, start_time, end_time, slot_duration_minutes: duracion })
+          });
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            msgHorario.textContent = data.mensaje || 'No se pudo guardar el horario.';
+            msgHorario.classList.add('error');
+            return;
+          }
+
+          msgHorario.textContent = data.mensaje || 'Horario guardado.';
+          msgHorario.classList.add('exito');
+          await cargarTurnosDia();
+        } catch (error) {
+          msgHorario.textContent = 'Error de conexión al guardar horario.';
+          msgHorario.classList.add('error');
+        }
+      });
+
+      fechaHorarioInput.addEventListener('change', cargarHorario);
+
+      // ---------- TURNOS DEL DÍA ----------
+      function renderEstadoBadge(status) {
+        switch (status) {
+          case 'programado':
+            return '<span class=\"badge badge-programado\">Programado</span>';
+          case 'cancelado_cliente':
+            return '<span class=\"badge badge-cancelado\">Cancelado cliente</span>';
+          case 'no_asistio':
+            return '<span class=\"badge badge-cancelado\">No asistió</span>';
+          case 'completado':
+            return '<span class=\"badge badge-completado\">Completado</span>';
+          default:
+            return `<span class=\"badge\">${status}</span>`;
+        }
+      }
+
+      async function cambiarAsistencia(id, estado) {
+        try {
+          const resp = await fetch(`${API_BASE}/barbero/turnos/${id}/asistencia`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ estado })
+          });
+          const data = await resp.json();
+          if (!resp.ok) {
+            alert(data.mensaje || 'No se pudo actualizar la asistencia.');
+            return;
+          }
+          await cargarTurnosDia();
+        } catch (error) {
+          alert('Error de conexión al actualizar asistencia.');
+        }
+      }
+
+      async function cargarTurnosDia() {
+        listaTurnos.textContent = 'Cargando turnos...';
+
+        const date = fechaTurnosInput.value;
+        if (!date) {
+          listaTurnos.textContent = 'Selecciona una fecha válida.';
+          return;
+        }
+
+        try {
+          const resp = await fetch(
+            `${API_BASE}/barbero/turnos?date=${encodeURIComponent(date)}`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+          );
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            listaTurnos.textContent = data.mensaje || 'No se pudieron cargar los turnos.';
+            return;
+          }
+
+          if (!data.turnos || data.turnos.length === 0) {
+            listaTurnos.textContent = 'No hay turnos para este día.';
+            return;
+          }
+
+          listaTurnos.innerHTML = '';
+          data.turnos.forEach((t) => {
+            const div = document.createElement('div');
+            div.className = 'turno-item';
+            div.innerHTML = `
+              <div class=\"turno-detalle\">
+                <strong>${t.start_time} - ${t.end_time}</strong><br/>
+                ${t.cliente_nombre} • ${t.cliente_telefono}<br/>
+                ${renderEstadoBadge(t.status)}
+              </div>
+              <div>
+                <button class=\"boton-pequeno boton-pequeno--ok\" data-id=\"${t.id}\" data-estado=\"completado\">Asistió</button>
+                <button class=\"boton-pequeno boton-pequeno--no\" data-id=\"${t.id}\" data-estado=\"no_asistio\">No</button>
+              </div>
+            `;
+            listaTurnos.appendChild(div);
+          });
+
+          listaTurnos.querySelectorAll('button[data-id]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const estado = btn.getAttribute('data-estado');
+              cambiarAsistencia(id, estado);
+            });
+          });
+        } catch (error) {
+          listaTurnos.textContent = 'Error de conexión al cargar turnos.';
+        }
+      }
+
+      fechaTurnosInput.addEventListener('change', cargarTurnosDia);
+      btnRefrescarTurnos.addEventListener('click', cargarTurnosDia);
+
+      // Carga inicial
+      cargarHorario();
+      cargarTurnosDia();
+    </script>
+  </body>
+  </html>
+

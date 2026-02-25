@@ -1,0 +1,24 @@
+services:
+  barberia:
+    build: .
+    container_name: barberia-turnos
+    ports:
+      # Host:Container
+      - "3000:3000"
+    environment:
+      # IMPORTANTE: cambia JWT_SECRET en producción
+      - PORT=3000
+      - DB_PATH=/app/data/barberia.db
+      - ZONA_HORARIA=America/Argentina/Buenos_Aires
+      # Configurables de negocio
+      - DURACION_TURNO_MINUTOS=60
+      - HORAS_MINIMAS_CANCELACION=1
+      - MENSAJE_PAGO_EFECTIVO=El pago del servicio se realiza únicamente en efectivo y de forma presencial en la barbería.
+      # Seguridad (cambiar)
+      - JWT_SECRET=CAMBIA_ESTA_CLAVE_SECRETA_EN_PRODUCCION
+      - JWT_EXPIRATION=7d
+    volumes:
+      # Persistencia de SQLite (no se borra al recrear el contenedor)
+      - ./data:/app/data
+    restart: unless-stopped
+

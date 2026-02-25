@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Cliente - Barbería</title>
+    <!-- =====================================================
+         ESTILOS DEL PANEL DE CLIENTE
+         -----------------------------------------------------
+         - Comparte la misma paleta que el index.
+         - Puedes cambiar colores en :root.
+         ===================================================== -->
+    <style>
+      :root {
+        --color-fondo: #050505;
+        --color-primario: #c9a25f;
+        --color-secundario: #f4e6c6;
+        --color-texto-suave: #9b8a6a;
+        --color-error: #e74c3c;
+        --color-exito: #2ecc71;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: var(--color-fondo);
+        color: var(--color-secundario);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(20, 20, 20, 0.95);
+        border-radius: 16px;
+        padding: 20px 18px 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--color-primario);
+      }
+
+      .logo-img {
+        width: 38px;
+        height: auto;
+      }
+
+      .logo-texto {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .saludo {
+        font-size: 13px;
+        color: var(--color-texto-suave);
+        text-align: right;
+      }
+
+      .boton-salir {
+        margin-top: 4px;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        background: transparent;
+        color: var(--color-texto-suave);
+        cursor: pointer;
+      }
+
+      h2 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      .bloque {
+        margin-bottom: 16px;
+        padding: 10px 10px 12px;
+        border-radius: 12px;
+        background: #151515;
+      }
+
+      .titulo-seccion {
+        font-size: 13px;
+        color: var(--color-texto-suave);
+        margin-bottom: 6px;
+      }
+
+      .texto-pequeno {
+        font-size: 12px;
+        color: var(--color-texto-suave);
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+
+      .boton {
+        width: 100%;
+        padding: 9px;
+        border-radius: 999px;
+        border: none;
+        background: var(--color-primario);
+        color: #000;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 6px;
+      }
+
+      .boton-secundario {
+        background: transparent;
+        color: var(--color-texto-suave);
+        border: 1px solid #333;
+      }
+
+      .mensaje {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+
+      .mensaje.error {
+        color: var(--color-error);
+      }
+
+      .mensaje.exito {
+        color: var(--color-exito);
+      }
+
+      .fila-turno {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-top: 4px;
+      }
+
+      .badge {
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+      }
+
+      .badge-programado {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--color-exito);
+      }
+
+      .badge-cancelado {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--color-error);
+      }
+
+      .badge-completado {
+        background: rgba(197, 157, 95, 0.15);
+        color: var(--color-primario);
+      }
+
+      .lista-historial {
+        max-height: 180px;
+        overflow-y: auto;
+      }
+
+      select,
+      input[type='date'] {
+        width: 100%;
+        padding: 7px 8px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #121212;
+        color: var(--color-secundario);
+        font-size: 13px;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <img src="logo-barberslp.png" alt="Barbers.LP" class="logo-img" />
+          <div class="logo-texto">BARBERS.LP</div>
+        </div>
+        <div class="saludo">
+          <div id="texto-saludo">Hola, cliente</div>
+          <button class="boton-salir" id="btn-logout">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <!-- BLOQUE: PRÓXIMO TURNO -->
+      <section class="bloque">
+        <div class="titulo-seccion">Tu próximo turno</div>
+        <div id="proximo-turno-detalle" class="texto-pequeno">
+          Cargando información de tu próximo turno...
+        </div>
+        <button id="btn-cancelar-turno" class="boton boton-secundario" style="display: none">
+          Cancelar este turno
+        </button>
+        <p id="mensaje-cancelacion" class="mensaje"></p>
+      </section>
+
+      <!-- BLOQUE: NUEVO TURNO -->
+      <section class="bloque">
+        <div class="titulo-seccion">Sacar un nuevo turno</div>
+        <div class="texto-pequeno">
+          Primero elige el día, luego selecciona uno de los horarios disponibles.
+        </div>
+        <input type="date" id="fecha-turno" />
+        <select id="select-horario">
+          <option value="">Selecciona un horario...</option>
+        </select>
+        <button id="btn-reservar" class="boton">Confirmar turno</button>
+        <p id="mensaje-reserva" class="mensaje"></p>
+        <p class="texto-pequeno">
+          <strong>Importante:</strong> El pago del servicio es
+          <strong>solo en efectivo y presencial</strong> en la barbería.
+        </p>
+      </section>
+
+      <!-- BLOQUE: HISTORIAL -->
+      <section class="bloque">
+        <div class="titulo-seccion">Historial de turnos</div>
+        <div id="historial-lista" class="lista-historial texto-pequeno">
+          Cargando historial...
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const API_BASE = '/api';
+      const token = localStorage.getItem('token');
+      const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+
+      if (!token || !usuario || usuario.role !== 'cliente') {
+        window.location.href = '/';
+      }
+
+      document.getElementById('texto-saludo').textContent = `Hola, ${usuario.nombre}`;
+
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('usuario');
+        window.location.href = '/';
+      });
+
+      const proximoDetalle = document.getElementById('proximo-turno-detalle');
+      const btnCancelar = document.getElementById('btn-cancelar-turno');
+      const msgCancelacion = document.getElementById('mensaje-cancelacion');
+
+      let turnoActualId = null;
+
+      async function cargarProximoTurno() {
+        msgCancelacion.textContent = '';
+        msgCancelacion.className = 'mensaje';
+        proximoDetalle.textContent = 'Cargando información de tu próximo turno...';
+        btnCancelar.style.display = 'none';
+        turnoActualId = null;
+
+        try {
+          const resp = await fetch(`${API_BASE}/turnos/mi-proximo`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const data = await resp.json();
+          if (!data.turno) {
+            proximoDetalle.textContent =
+              'No tienes ningún turno activo. Puedes sacar uno nuevo más abajo.';
+            return;
+          }
+
+          turnoActualId = data.turno.id;
+          proximoDetalle.innerHTML = `
+            Fecha: <strong>${data.turno.date}</strong><br/>
+            Hora: <strong>${data.turno.start_time} - ${data.turno.end_time}</strong><br/>
+            Estado: <span class="badge badge-programado">Programado</span>
+          `;
+          btnCancelar.style.display = 'block';
+        } catch (error) {
+          proximoDetalle.textContent = 'Error al cargar tu próximo turno.';
+        }
+      }
+
+      btnCancelar.addEventListener('click', async () => {
+        if (!turnoActualId) return;
+        msgCancelacion.textContent = '';
+        msgCancelacion.className = 'mensaje';
+
+        if (!confirm('¿Seguro que quieres cancelar este turno?')) return;
+
+        try {
+          const resp = await fetch(`${API_BASE}/turnos/cancelar/${turnoActualId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          });
+          const data = await resp.json();
+          if (!resp.ok) {
+            msgCancelacion.textContent = data.mensaje || 'No se pudo cancelar el turno.';
+            msgCancelacion.classList.add('error');
+            return;
+          }
+
+          msgCancelacion.textContent = data.mensaje || 'Turno cancelado correctamente.';
+          msgCancelacion.classList.add('exito');
+          await cargarProximoTurno();
+          await cargarHistorial();
+        } catch (error) {
+          msgCancelacion.textContent = 'Error de conexión al cancelar.';
+          msgCancelacion.classList.add('error');
+        }
+      });
+
+      // ---------------- NUEVO TURNO ----------------
+      const inputFecha = document.getElementById('fecha-turno');
+      const selectHorario = document.getElementById('select-horario');
+      const btnReservar = document.getElementById('btn-reservar');
+      const msgReserva = document.getElementById('mensaje-reserva');
+
+      // Por defecto, ponemos la fecha de hoy.
+      const hoy = new Date();
+      const hoyStr = hoy.toISOString().slice(0, 10);
+      inputFecha.value = hoyStr;
+
+      inputFecha.addEventListener('change', cargarHorariosDisponibles);
+
+      async function cargarHorariosDisponibles() {
+        msgReserva.textContent = '';
+        msgReserva.className = 'mensaje';
+        selectHorario.innerHTML = '<option value=\"\">Cargando horarios...</option>';
+
+        const date = inputFecha.value;
+        if (!date) {
+          selectHorario.innerHTML =
+            '<option value=\"\">Selecciona una fecha válida...</option>';
+          return;
+        }
+
+        try {
+          const resp = await fetch(
+            `${API_BASE}/turnos/disponibles?date=${encodeURIComponent(date)}`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+          );
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            selectHorario.innerHTML =
+              '<option value=\"\">No se pudieron cargar horarios...</option>';
+            return;
+          }
+
+          if (!data.disponibles || data.disponibles.length === 0) {
+            selectHorario.innerHTML =
+              '<option value=\"\">No hay horarios disponibles para ese día.</option>';
+            return;
+          }
+
+          selectHorario.innerHTML =
+            '<option value=\"\">Selecciona un horario...</option>';
+          data.disponibles.forEach((slot) => {
+            const opt = document.createElement('option');
+            opt.value = slot.start_time;
+            opt.textContent = `${slot.start_time} - ${slot.end_time}`;
+            selectHorario.appendChild(opt);
+          });
+        } catch (error) {
+          selectHorario.innerHTML =
+            '<option value=\"\">Error al cargar horarios.</option>';
+        }
+      }
+
+      btnReservar.addEventListener('click', async () => {
+        msgReserva.textContent = '';
+        msgReserva.className = 'mensaje';
+
+        const date = inputFecha.value;
+        const start_time = selectHorario.value;
+
+        if (!date || !start_time) {
+          msgReserva.textContent = 'Elige una fecha y un horario.';
+          msgReserva.classList.add('error');
+          return;
+        }
+
+        try {
+          const resp = await fetch(`${API_BASE}/turnos/reservar`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ date, start_time })
+          });
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            msgReserva.textContent = data.mensaje || 'No se pudo reservar el turno.';
+            msgReserva.classList.add('error');
+            return;
+          }
+
+          msgReserva.textContent = data.mensaje || 'Turno reservado con éxito.';
+          msgReserva.classList.add('exito');
+          await cargarProximoTurno();
+          await cargarHistorial();
+          await cargarHorariosDisponibles();
+        } catch (error) {
+          msgReserva.textContent = 'Error de conexión al reservar.';
+          msgReserva.classList.add('error');
+        }
+      });
+
+      // ---------------- HISTORIAL ----------------
+      const historialLista = document.getElementById('historial-lista');
+
+      function renderEstadoBadge(status) {
+        switch (status) {
+          case 'programado':
+            return '<span class=\"badge badge-programado\">Programado</span>';
+          case 'cancelado_cliente':
+            return '<span class=\"badge badge-cancelado\">Cancelado</span>';
+          case 'no_asistio':
+            return '<span class=\"badge badge-cancelado\">No asistió</span>';
+          case 'completado':
+            return '<span class=\"badge badge-completado\">Completado</span>';
+          default:
+            return `<span class=\"badge\">${status}</span>`;
+        }
+      }
+
+      async function cargarHistorial() {
+        historialLista.textContent = 'Cargando historial...';
+
+        try {
+          const resp = await fetch(`${API_BASE}/turnos/historial`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const data = await resp.json();
+
+          if (!resp.ok) {
+            historialLista.textContent = data.mensaje || 'No se pudo cargar el historial.';
+            return;
+          }
+
+          if (!data.turnos || data.turnos.length === 0) {
+            historialLista.textContent = 'Aún no tienes turnos registrados.';
+            return;
+          }
+
+          historialLista.innerHTML = '';
+          data.turnos.forEach((t) => {
+            const div = document.createElement('div');
+            div.className = 'fila-turno';
+            div.innerHTML = `
+              <div>
+                ${t.date} • ${t.start_time}-${t.end_time}
+              </div>
+              <div>
+                ${renderEstadoBadge(t.status)}
+              </div>
+            `;
+            historialLista.appendChild(div);
+          });
+        } catch (error) {
+          historialLista.textContent = 'Error de conexión al cargar historial.';
+        }
+      }
+
+      // Carga inicial
+      cargarProximoTurno();
+      cargarHorariosDisponibles();
+      cargarHistorial();
+    </script>
+  </body>
+  </html>
+
