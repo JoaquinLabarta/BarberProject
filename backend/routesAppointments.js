@@ -76,6 +76,7 @@ router.get('/disponibles', requireAuth, (req, res) => {
         schedule.slot_duration_minutes || CONFIG.DURACION_TURNO_MINUTOS;
 
       const ahora = new Date();
+      ahora.setMinutes(ahora.getMinutes() - 5);
 
       // Obtenemos los turnos ya reservados ese día.
       db.all(
@@ -95,18 +96,17 @@ router.get('/disponibles', requireAuth, (req, res) => {
 
           for (let t = inicioMin; t + duracion <= finMin; t += duracion) {
             const horaInicioStr = minutosAHoraStr(t);
-
-            // Saltamos los que ya están ocupados.
+          
             if (ocupados.has(horaInicioStr)) {
               continue;
             }
-
-            // Saltamos horarios en el pasado.
+          
+            // Saltamos horarios en el pasado usando nuestra variable 'ahora' modificada.
             const fechaHoraTurno = combinarFechaHora(date, horaInicioStr);
             if (fechaHoraTurno <= ahora) {
               continue;
             }
-
+          
             disponibles.push({
               date,
               start_time: horaInicioStr,
@@ -143,12 +143,11 @@ router.post('/reservar', requireAuth, (req, res) => {
   }
 
   const ahora = new Date();
+  ahora.setMinutes(ahora.getMinutes() - 5); // Le damos 5 minutos de tolerancia para reservar el turno actual
   const fechaHoraTurno = combinarFechaHora(date, start_time);
 
   if (fechaHoraTurno <= ahora) {
-    return res
-      .status(400)
-      .json({ mensaje: 'No se pueden reservar turnos en el pasado.' });
+    return res.status(400).json({ mensaje: 'El horario seleccionado ya no está disponible.' });
   }
 
   // 1) Verificamos que el cliente no tenga ya un turno programado.
