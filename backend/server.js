@@ -53,7 +53,7 @@ app.get('/api', (req, res) => {
 // ------------------------------------------------------------
 const frontendPath = path.join(__dirname, '..', 'frontend');
 // Esto dejalo así asumiendo que tus archivos CSS y JS siguen dentro de /frontend
-app.use(express.static(frontendPath)); 
+app.use('/frontend', express.static(frontendPath));
 
 // Si alguien abre la raíz "/", devolvemos el index.html que ahora está en la raíz.
 app.get('/', (req, res) => {
