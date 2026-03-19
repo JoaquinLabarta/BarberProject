@@ -191,6 +191,42 @@
         font-size: 13px;
         margin-top: 4px;
       }
+
+      /* Agrega esto al final de tu etiqueta <style> o archivo CSS */
+
+      .client-footer {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid #333; /* Línea separadora sutil que combina con tus inputs/botones */
+        text-align: center;
+      }
+
+      .client-footer h3 {
+        font-size: 13px;
+        color: var(--color-texto-suave); /* Usa tu variable para mantener jerarquía visual */
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .social-icon {
+        color: var(--color-secundario); /* Color claro por defecto */
+        font-size: 22px;
+        text-decoration: none;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      .social-icon:hover {
+        color: var(--color-primario); /* Usa tu color dorado/primario al pasar el mouse */
+        transform: translateY(-3px);
+      }
     </style>
   </head>
   <body>
@@ -247,18 +283,15 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
       <footer class="client-footer">
-          <div class="footer-content">
-            <div id="texto-saludo">Contacto</div>
-              <div class="social-links">
-                  <a href="https://www.instagram.com/barbers.lp" target="_blank" aria-label="Instagram" class="social-icon">
-                      <i class="fab fa-instagram"></i>
-                  </a>
-                  
-                  <a href="https://api.whatsapp.com/send/?phone=5492215942001&text&type=phone_number&app_absent=0" target="_blank" aria-label="WhatsApp" class="social-icon">
-                      <i class="fab fa-whatsapp"></i>
-                  </a>
-              </div>
-          </div>
+        <h3>Contacto</h3>
+        <div class="social-links">
+          <a href="https://www.instagram.com/barbers.lp" target="_blank" aria-label="Instagram" class="social-icon">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="api.whatsapp.com/send/?phone=5492215942001&text&type=phone_number&app_absent=0&utm_source=ig" target="_blank" aria-label="WhatsApp" class="social-icon">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
       </footer>
     </div>
 

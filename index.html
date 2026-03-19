@@ -212,7 +212,7 @@
               la carpeta "frontend".
             - El src de la imagen ya apunta a ese archivo.
           -->
-          <img src="frontend/logo-barberslp.png" alt="Barbers.LP" class="logo-img" />
+          <img src="logo-barberslp.png" alt="Barbers.LP" class="logo-img" />
           <div class="logo-texto">Bienvenido!</div>
         </div>
         <div class="subtitulo">Inicia sesion o registrate para ingresar</div>
@@ -401,9 +401,9 @@
           // - cliente -> panel del cliente
           setTimeout(() => {
             if (data.usuario.role === 'barbero') {
-              window.location.href = 'frontend/barbero.html';
+              window.location.href = 'barbero.html';
             } else {
-              window.location.href = 'frontend/cliente.html';
+              window.location.href = 'cliente.html';
             }
           }, 600);
         } catch (error) {

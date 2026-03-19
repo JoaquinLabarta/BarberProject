@@ -51,14 +51,14 @@ app.get('/api', (req, res) => {
 // ------------------------------------------------------------
 // SERVIR FRONTEND ESTÁTICO
 // ------------------------------------------------------------
-// AQUÍ SERVIMOS LOS ARCHIVOS HTML/CSS/JS DEL FRONTEND.
-// Puedes cambiar la carpeta "frontend" si lo deseas.
 const frontendPath = path.join(__dirname, '..', 'frontend');
-app.use(express.static(frontendPath));
+// Esto dejalo así asumiendo que tus archivos CSS y JS siguen dentro de /frontend
+app.use(express.static(frontendPath)); 
 
-// Si alguien abre la raíz "/", devolvemos el index.html del frontend.
+// Si alguien abre la raíz "/", devolvemos el index.html que ahora está en la raíz.
 app.get('/', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  // ACÁ ESTÁ EL CAMBIO: sube un nivel (..) y busca el index.html directamente
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 // ------------------------------------------------------------

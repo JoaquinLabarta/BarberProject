@@ -19,6 +19,7 @@ RUN npm install --omit=dev
 # Copiamos el resto del proyecto
 COPY backend ./backend
 COPY frontend ./frontend
+COPY index.html ./
 
 # Carpeta de datos (SQLite)
 RUN mkdir -p /app/data
