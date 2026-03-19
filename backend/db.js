@@ -88,7 +88,7 @@ function inicializarBaseDeDatos() {
     // PUEDES CAMBIAR ESTOS DATOS O ELIMINAR ESTE BLOQUE SI PREFIERES
     // CREAR EL BARBERO DESDE OTRO LADO.
     const bcrypt = require('bcryptjs');
-    const passwordPorDefecto = 'barbero123'; // <-- CAMBIA ESTA CONTRASEÑA LUEGO
+    const passwordPorDefecto = 'npoblete1'; // <-- CAMBIA ESTA CONTRASEÑA LUEGO
     const passwordHash = bcrypt.hashSync(passwordPorDefecto, 10);
 
     db.get(`SELECT COUNT(*) AS count FROM users WHERE role = 'barbero'`, [], (err, row) => {
@@ -103,10 +103,10 @@ function inicializarBaseDeDatos() {
           VALUES (?, ?, ?, ?, ?, 'barbero')
         `,
           [
-            'Barbero Principal',
-            'barbero@barberia.com',
-            '0000000000',
-            'Dirección de la barbería',
+            'Nicolas',
+            'nicopoblete@gmail.com',
+            '5492215942001',
+            'Calle 56 y 6',
             passwordHash
           ],
           (insertErr) => {

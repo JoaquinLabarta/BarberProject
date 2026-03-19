@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membresías - Barbería</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* --- VARIABLES Y ESTILOS BASE --- */
+    :root {
+      --color-fondo: #050505;
+      --color-primario: #c9a25f;
+      --color-secundario: #f4e6c6;
+      --color-texto-suave: #9b8a6a;
+      --color-error: #e74c3c;
+      --color-exito: #2ecc71;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--color-fondo);
+      color: var(--color-secundario);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 16px;
+      padding: 20px 18px 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-primario);
+    }
+
+    .logo-texto {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .bloque {
+      margin-bottom: 16px;
+      padding: 10px 10px 12px;
+      border-radius: 12px;
+      background: #151515;
+    }
+
+    .titulo-seccion {
+      font-size: 13px;
+      color: var(--color-texto-suave);
+      margin-bottom: 6px;
+    }
+
+    .boton {
+      width: 100%;
+      padding: 9px;
+      border-radius: 999px;
+      border: none;
+      background: var(--color-primario);
+      color: #000;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .boton-secundario {
+      background: transparent;
+      color: var(--color-texto-suave);
+      border: 1px solid #333;
+    }
+
+    /* --- ESTILOS DE MEMBRESÍAS --- */
+    .lista-beneficios {
+      padding-left: 18px;
+      color: var(--color-texto-suave);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-top: 8px;
+    }
+
+    .plan-card {
+      background: rgba(201, 162, 95, 0.08);
+      border: 1px solid rgba(201, 162, 95, 0.3);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s ease;
+    }
+
+    .plan-card:hover {
+      border-color: var(--color-primario);
+    }
+
+    .plan-info h4 {
+      color: var(--color-secundario);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .plan-info p {
+      font-size: 12px;
+      color: var(--color-texto-suave);
+    }
+
+    .plan-precio {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-primario);
+      text-align: right;
+    }
+
+    .lista-condiciones {
+      padding-left: 18px;
+      color: var(--color-texto-suave);
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    .lista-condiciones li {
+      margin-bottom: 10px;
+    }
+
+    .lista-condiciones strong {
+      color: var(--color-secundario);
+      font-weight: 600;
+    }
+
+    .btn-volver {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 24px;
+      box-sizing: border-box;
+    }
+
+    /* --- ESTILOS DEL FOOTER --- */
+    .client-footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #333;
+      text-align: center;
+    }
+
+    .client-footer h3 {
+      font-size: 13px;
+      color: var(--color-texto-suave);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-icon {
+      color: var(--color-secundario);
+      font-size: 22px;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .social-icon:hover {
+      color: var(--color-primario);
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <div class="logo-texto">Membresías</div>
+      </div>
+    </header>
+
+    <div class="bloque">
+      <div class="titulo-seccion">Beneficios</div>
+      <ul class="lista-beneficios">
+        <li>Turnos fijos</li>
+        <li>Atención personalizada</li>
+        <li>Prioridad en agenda</li>
+        <li>Precio preferencial</li>
+        <li>Siempre prolijo</li>
+      </ul>
+    </div>
+
+    <div class="bloque">
+      <div class="titulo-seccion">Planes</div>
+      
+      <div class="plan-card">
+        <div class="plan-info">
+          <h4>Plan Esencial</h4>
+          <p>2 cortes mensuales</p>
+        </div>
+        <div class="plan-precio">$20.000</div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <h4>Plan Full</h4>
+          <p>3 cortes mensuales</p>
+        </div>
+        <div class="plan-precio">$30.000</div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <h4>Plan Amigos</h4>
+          <p>4 cortes mensuales</p>
+        </div>
+        <div class="plan-precio">$38.000</div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <div class="titulo-seccion">Condiciones</div>
+      <ol class="lista-condiciones">
+        <li><strong>Vigencia mensual:</strong> Los planes tienen duración el mes pago. Se abonan del día 1 al 10 de cada mes.</li>
+        <li><strong>Cortes no acumulables:</strong> Los cortes que no uses no se pasan al mes siguiente.</li>
+        <li><strong>Turno previo:</strong> Todos los cortes se realizan con cita previa fijada una vez que se abona el mes.</li>
+        <li><strong>Inasistencia sin aviso -> Turno perdido:</strong> Avisar con al menos 24 horas de anticipación para reprogramar.</li>
+        <li><strong>Planes personales:</strong> Los planes son personales e intransferibles, excepto el plan amigos, que se comparten entre dos personas.</li>
+      </ol>
+    </div>
+
+    <a href="/" class="boton boton-secundario btn-volver">Volver al inicio</a>
+
+    <footer class="client-footer">
+      <h3>Contacto</h3>
+      <div class="social-links">
+        <a href="https://www.instagram.com/barbers.lp" target="_blank" aria-label="Instagram" class="social-icon">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="api.whatsapp.com/send/?phone=5492215942001&text&type=phone_number&app_absent=0&utm_source=ig" target="_blank" aria-label="WhatsApp" class="social-icon">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
