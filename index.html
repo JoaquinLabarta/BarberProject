@@ -401,23 +401,15 @@
           // - cliente -> panel del cliente
           setTimeout(() => {
             if (data.usuario.role === 'barbero') {
-              window.location.href = '/barbero.html';
+              window.location.href = 'frontend/barbero.html';
             } else {
-              window.location.href = '/cliente.html';
+              window.location.href = 'frontend/cliente.html';
             }
           }, 600);
         } catch (error) {
           loginMensaje.textContent = 'Error de conexión con el servidor.';
           loginMensaje.classList.add('error');
         }
-      });
-
-      // Botón de demo (de momento solo muestra un mensaje)
-      document.getElementById('boton-panel-demo').addEventListener('click', () => {
-        alert(
-          'En esta demo inicial solo se muestra el inicio.\n' +
-            'Luego se agregarán pantallas completas para clientes y barbero (historial, horarios, etc.).'
-        );
       });
     </script>
   </body>
