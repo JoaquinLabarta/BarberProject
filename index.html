@@ -239,7 +239,7 @@
           <p id="login-mensaje" class="mensaje"></p>
 
           <!--Seccion membresias-->
-          <a href="membresias.html" class="boton boton-secundario" style="display: block; text-align: center; text-decoration: none; margin-top: 16px;">
+          <a href="frontend/membresias.html" class="boton boton-secundario" style="display: block; text-align: center; text-decoration: none; margin-top: 16px;">
           Información sobre membresías
           </a>
         </form>
@@ -406,9 +406,9 @@
           // - cliente -> panel del cliente
           setTimeout(() => {
             if (data.usuario.role === 'barbero') {
-              window.location.href = 'barbero.html';
+              window.location.href = 'frontend/barbero.html';
             } else {
-              window.location.href = 'cliente.html';
+              window.location.href = 'frontend/cliente.html';
             }
           }, 600);
         } catch (error) {
